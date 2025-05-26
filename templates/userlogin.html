@@ -6,20 +6,20 @@
 
 
 {% block content %}
-
+<section class="conteudo">
     <div class="dados">
         <br><br><br>
         <img src="{{ url_for('static', filename='images/Userlogin.jpg')}}" alt="userlogin" width="200" height="200">
         <h1>Userlogin</h1>
         <br>
-        <button id="edit" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=edit'" class="button1">Edit</button>
+        <button id="edit" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=edit'" class="btn">Edit</button>
         {% if group == "admin" %} 
-            <button id="delete" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=delete'" class="button1">Delete</button>
-            <button id="insert" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=insert'" class="button1">Insert</button>
+            <button id="delete" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=delete'" class="btn">Delete</button>
+            <button id="insert" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=insert'" class="btn">Insert</button>
         {% endif %}
-        <button id="save" type="submit" form="form" {{butedit}} class="button1">Save</button>
-        <button id="cancel" type="button" {{butedit}} onclick="window.location.href = '/Userlogin?option=cancel'" class="button1">Cancel</button>
-        <button id="exit" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=exit'" class="button1">Exit</button>
+        <button id="save" type="submit" form="form" {{butedit}} class="btn">Save</button>
+        <button id="cancel" type="button" {{butedit}} onclick="window.location.href = '/Userlogin?option=cancel'" class="btn">Cancel</button>
+        <button id="exit" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=exit'" class="btn">Exit</button>
         <br><br>
         <form id="form" action="/Userlogin?option=save" method="post">
          {% if group == "admin" %} 
@@ -47,14 +47,14 @@
         </form>
         <br>
         {% if group == "admin" %} 
-            <button id="first" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=first'" class="button1">First</button>
-            <button id="previous" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=previous'" class="button1">Previous</button>
-            <button id="next" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=next'" class="button1">Next</button>
-            <button id="last" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=last'" class="button1">Last</button>
+            <button id="first" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=first'" class="btn">First</button>
+            <button id="previous" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=previous'" class="btn">Previous</button>
+            <button id="next" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=next'" class="btn">Next</button>
+            <button id="last" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=last'" class="btn">Last</button>
         {% endif %}
         <br>
         <p style="color: red;">{{msg}}</p>
         
     </div>
-
+</section>
 {% endblock %}
