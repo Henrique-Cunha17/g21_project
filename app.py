@@ -3,6 +3,8 @@ from classes.Carriers import Carriers
 from classes.Shipments import Shipments
 from classes.Shipment_details import Shipment_details
 from classes.Warehouses import Warehouses
+from classes.userlogin import Userlogin
+from subs.apps_userlogin import apps_userlogin
 from typing import Tuple, Dict
 from collections import Counter
 from datafile import filename
@@ -98,7 +100,34 @@ def get_common_data(cls, option: str) -> Tuple[str, str, Dict[str, str]]:
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if not session.get("user"):
+        return redirect(url_for("login"))
+    return render_template("index.html", ulogin=session.get("user"))
+
+@app.route("/login")
+def login():
+    return render_template("login.html", user= "", password="", ulogin=session.get("user"),resul = "")
+
+@app.route("/logoff")
+def logoff():
+    session.pop("user", None)
+    return redirect(url_for("login"))
+
+@app.route("/chklogin", methods=["POST", "GET"])
+def chklogin():
+    if request.method == "POST":
+        user = request.form["user"]
+        password = request.form["password"]
+        resul = Userlogin.chk_password(user, password)
+        if resul == "Valid":
+            session["user"] = user
+            return redirect(url_for("index"))
+        return render_template("login.html", user=user, password=password, ulogin=session.get("user"), resul=resul)
+    return render_template("login.html", user="", password="", ulogin=session.get("user"), resul="")
+
+@app.route("/Userlogin", methods=["POST","GET"])
+def userlogin():
+    return apps_userlogin()
 
 @app.route("/carriers", methods=["GET", "POST"])
 def carriers():
@@ -109,7 +138,7 @@ def carriers():
     if isinstance(result, Response):
         return result
     butshow, butedit, fields = result
-    return render_template("carriers.html", butshow=butshow, butedit=butedit, fields=fields)
+    return render_template("carriers.html", butshow=butshow, butedit=butedit, fields=fields, ulogin=session.get("user"))
 
 @app.route("/shipments", methods=["GET", "POST"])
 def shipments():
@@ -120,7 +149,7 @@ def shipments():
     if isinstance(result, Response):
         return result
     butshow, butedit, fields = result
-    return render_template("shipments.html", butshow=butshow, butedit=butedit, fields=fields)
+    return render_template("shipments.html", butshow=butshow, butedit=butedit, fields=fields, ulogin=session.get("user"))
 
 @app.route("/shipment_details", methods=["GET", "POST"])
 def shipment_details():
@@ -131,7 +160,7 @@ def shipment_details():
     if isinstance(result, Response):
         return result
     butshow, butedit, fields = result
-    return render_template("shipment_details.html", butshow=butshow, butedit=butedit, fields=fields)
+    return render_template("shipment_details.html", butshow=butshow, butedit=butedit, fields=fields, ulogin=session.get("user"))
 
 @app.route("/warehouses", methods=["GET", "POST"])
 def warehouses():
@@ -142,7 +171,9 @@ def warehouses():
     if isinstance(result, Response):
         return result
     butshow, butedit, fields = result
-    return render_template("warehouses.html", butshow=butshow, butedit=butedit, fields=fields)
+    return render_template("warehouses.html", butshow=butshow, butedit=butedit, fields=fields, ulogin=session.get("user"))
+
+
 
 @app.route("/statistics", methods=["GET", "POST"])
 def statistics():
@@ -195,7 +226,8 @@ def statistics():
         selected_class=selected_class,
         selected_attr=selected_attr,
         labels=data_labels,
-        counts=data_counts
+        counts=data_counts,
+        ulogin=session.get("user")
     )
 
 if __name__ == '__main__':

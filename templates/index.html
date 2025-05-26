@@ -1,24 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shipping Management</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="large-title">Transportadora Rapid Row</h1>
-        </header>
+{% extends 'base.html' %}
 
-        <section class="button-group">
-            <a href="/carriers" class="btn">Carriers</a>
-            <a href="/shipments" class="btn">Shipments</a>
-            <a href="/shipment_details" class="btn">Shipment Details</a>
-            <a href="/warehouses" class="btn">Warehouses</a>
-            <a href="/statistics" class="btn">Statistics</a>
-        </section>
-    </div>
-</body>
-</html>
+{% block title %}
+    <title>Shipping Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section class="conteudo">
+        <h1>Transportadora Rapid Row</h1>
+        <div class="container">
+            <section class="button-group">
+                <a href="/carriers" class="btn">Carriers</a>
+                <a href="/shipments" class="btn">Shipments</a>
+                <a href="/shipment_details" class="btn">Shipment Details</a>
+                <a href="/warehouses" class="btn">Warehouses</a>
+            </section>
+        </div>
+    </section>
+{% endblock %}

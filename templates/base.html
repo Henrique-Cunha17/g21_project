@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flask demo PCII</title>
+    {% block title %}
+    {% endblock %}
+  </head>
+    <body>
+        <nav class="navbar">
+            <ul class="menu">
+                {% if ulogin == None %}
+                    <li><a class="btn" href="/login">Login</a></li>
+                {% else %}
+                    <li><a class="btn" href="/logoff">Logoff</a></li>
+                    <li><a class="btn" href="/Person">Person</a></li>
+                    <li><a class="btn" href="/gform/Customer">Customer</a></li>
+                    <li><a class="btn" href="/gform/Product">Product</a></li>
+                    <li><a class="btn" href="/gform/CustomerOrder">Order</a></li>
+                    <li><a class="btn" href="/subform/CustomerOrder_OrderProduct?option=''">Order lines</a></li>
+                    <li><a class="btn" href="/Userlogin">Users</a></li>
+                    <li><a class="btn" style="color:lightblue">User: {{ulogin}}</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
