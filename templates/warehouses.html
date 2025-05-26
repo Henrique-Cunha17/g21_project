@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Warehouses Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='images/warehouses.jpg') }}" alt="Warehouses" class="logo">
+            <h1>Warehouses Management</h1>
+        </header>
+
+        <section class="button-group">
+            <button id="edit" {{ butshow }} onclick="window.location.href='/warehouses?option=edit'" class="btnimage">
+                <img src="{{ url_for('static', filename='images/editar.png') }}" alt="Edit">
+            </button>
+            <button id="delete" {{ butshow }} onclick="window.location.href='/warehouses?option=delete'" class="btnimage">
+                <img src="{{ url_for('static', filename='images/eliminar.png') }}" alt="Delete">
+            </button>
+            <button id="insert" {{ butshow }} onclick="window.location.href='/warehouses?option=insert'" class="btn">Insert</button>
+            <button id="save" type="submit" form="form" {{ butedit }} class="btn">Save</button>
+            <button id="cancel" {{ butedit }} onclick="window.location.href='/warehouses?option=cancel'" class="btn">Cancel</button>
+            <button id="exit" {{ butshow }} onclick="window.location.href='/warehouses?option=exit'" class="btn">Exit</button>
+        </section>
+
+        <form id="form" class="form" action="/warehouses?option=save" method="post">
+            <div class="form-group">
+                <label for="warehouse_id">Warehouse ID:</label>
+                <input type="text" {{ butedit }} id="warehouse_id" name="warehouse_id" value="{{ fields.warehouse_id }}">
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" {{ butedit }} id="location" name="location" value="{{ fields.location }}">
+            </div>
+
+            <div class="form-group">
+                <label for="capacity">Capacity:</label>
+                <input type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
+            </div>
+        </form>
+
+        <section class="nav-buttons">
+            <button id="first" {{ butshow }} onclick="window.location.href='/warehouses?option=first'" class="btn">First</button>
+            <button id="previous" {{ butshow }} onclick="window.location.href='/warehouses?option=previous'" class="btnimage" >
+            <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
+            </button>
+            <button id="next" {{ butshow }} onclick="window.location.href='/warehouses?option=next'" class="btnimage">
+            <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
+            </button>
+            <button id="last" {{ butshow }} onclick="window.location.href='/warehouses?option=last'" class="btn">Last</button>
+        </section>
+    </div>
+</body>
+</html>
