@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flask demo PCII</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     {% block title %}
     {% endblock %}
   </head>
@@ -18,8 +21,9 @@
                     <li><a class="btn" href="/shipments">Shipments</a></li>
                     <li><a class="btn" href="/shipment_details">Shipment Details</a></li>
                     <li><a class="btn" href="/warehouses">Warehouses</a></li>
+                    <li><a class="btn" href="/statistics">Statistics</a></li>
                     <li><a class="btn" href="/Userlogin">Users</a></li>
-                    <li><a class="btn" style="color:lightblue">User: {{ulogin}}</a></li>
+                    <li><a class="btn" style="color:rgb(12, 42, 52)">USER: {{ulogin}}</a></li>
                 {% endif %}
             </ul>
         </nav>

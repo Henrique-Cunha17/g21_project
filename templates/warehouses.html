@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'base.html' %}
+
+{% block title %}
     <title>Warehouses Management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <header class="header">
             <img src="{{ url_for('static', filename='images/warehouses.jpg') }}" alt="Warehouses" class="logo">
@@ -46,13 +45,12 @@
         <section class="nav-buttons">
             <button id="first" {{ butshow }} onclick="window.location.href='/warehouses?option=first'" class="btn">First</button>
             <button id="previous" {{ butshow }} onclick="window.location.href='/warehouses?option=previous'" class="btnimage" >
-            <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
+                <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
             </button>
             <button id="next" {{ butshow }} onclick="window.location.href='/warehouses?option=next'" class="btnimage">
-            <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
+                <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
             </button>
             <button id="last" {{ butshow }} onclick="window.location.href='/warehouses?option=last'" class="btn">Last</button>
         </section>
     </div>
-</body>
-</html>
+{% endblock %}

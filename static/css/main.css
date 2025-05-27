@@ -60,29 +60,53 @@ h1 {
     font-weight: 500;
 }
 
+.input-modern {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #b0c4de;      /* azul claro e suave */
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f6f8fb;               /* cinza-azulado muito claro */
+    color: #2c3e50;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-modern:focus {
+    border-color: #7da6d9;             /* azul claro ao focar */
+    box-shadow: 0 0 0 2px rgba(125,166,217,0.15);
+    background: #fff;
+}
+
 /* Buttons */
 .btn {
     display: inline-block;
     padding: 0.6em 1.2em;
     font-size: 1rem;
     height: auto;
-    background-color: #007BFF;
-    color: white;
+    background: linear-gradient(135deg, #e3eaf3 0%, #7da6d9 100%);
+    /* gradiente mais intenso: começa mais claro e termina num azul mais escuro */
+    color: #2c3e50;
     text-decoration: none;
     border-radius: 0.4em;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s, box-shadow 0.3s;
+    transition: background 0.3s ease, background-color 0.3s ease, transform 0.3s, box-shadow 0.3s;
     margin: 10px;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+    font-family: "Mulish", sans-serif;
+    font-weight: bold;
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #c7d6ea 0%, #4a7bb7 100%);
+    /* hover ainda mais escuro no fim */
+    color: #fff;
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -165,14 +189,6 @@ h1 {
 label {
     font-weight: 600;
     margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="number"] {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
 }
 
 select {

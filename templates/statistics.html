@@ -1,91 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
+{% extends 'base.html' %}
+
+{% block title %}
     <title>Statistics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
-<div class="container">
-    <header class="header">
-        <h1 class="large-title">Interactive Statistics</h1>
-    </header>
+{% endblock %}
 
-    <form method="POST" class="form">
-        <div class="form-group">
-            <label for="class">Select Class:</label>
-            <select name="class" id="class" required onchange="updateAttributes()">
-                <option value="">-- Choose a class --</option>
-                {% for cls in class_names %}
-                    <option value="{{ cls }}" {% if cls == selected_class %}selected{% endif %}>{{ cls }}</option>
-                {% endfor %}
-            </select>
-        </div>
+{% block content %}
+    <div class="container">
+        <header class="header">
+            <h1 class="large-title">Interactive Statistics</h1>
+        </header>
 
-        <div class="form-group">
-            <label for="attribute">Select Attribute:</label>
-            <select name="attribute" id="attribute" required>
-                {% if selected_class %}
-                    {% for attr in attributes[selected_class] %}
-                        <option value="{{ attr }}" {% if attr == selected_attr %}selected{% endif %}>{{ attr }}</option>
+        <form method="POST" class="form">
+            <div class="form-group">
+                <label for="class">Select Class:</label>
+                <select name="class" id="class" required onchange="updateAttributes()">
+                    <option value="">-- Choose a class --</option>
+                    {% for cls in class_names %}
+                        <option value="{{ cls }}" {% if cls == selected_class %}selected{% endif %}>{{ cls }}</option>
                     {% endfor %}
-                {% endif %}
-            </select>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="attribute">Select Attribute:</label>
+                <select name="attribute" id="attribute" required>
+                    {% if selected_class %}
+                        {% for attr in attributes[selected_class] %}
+                            <option value="{{ attr }}" {% if attr == selected_attr %}selected{% endif %}>{{ attr }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn">Generate Chart</button>
+                <a href="/" class="btn">Exit</a>
+            </div>
+        </form>
+
+        {% if labels %}
+        <div style="margin-top: 40px;">
+            <canvas id="chartCanvas" width="600" height="400"></canvas>
         </div>
 
-        <!-- Side-by-side buttons -->
-        <div class="button-group">
-            <button type="submit" class="btn">Generate Chart</button>
-            <a href="/" class="btn">Exit</a>
-        </div>
-    </form>
+        <script>
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ labels | tojson }},
+                    datasets: [{
+                        label: '{{ selected_attr }} count',
+                        data: {{ counts | tojson }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        </script>
+        {% endif %}
 
-    {% if labels %}
-    <div style="margin-top: 40px;">
-        <canvas id="chartCanvas" width="600" height="400"></canvas>
-    </div>
+        <script>
+            const allAttributes = {{ attributes | tojson }};
+            function updateAttributes() {
+                const classSelect = document.getElementById("class");
+                const attrSelect = document.getElementById("attribute");
+                const selected = classSelect.value;
+                attrSelect.innerHTML = "";
 
-    <script>
-        const ctx = document.getElementById('chartCanvas').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ labels | tojson }},
-                datasets: [{
-                    label: '{{ selected_attr }} count',
-                    data: {{ counts | tojson }},
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true }
+                if (allAttributes[selected]) {
+                    allAttributes[selected].forEach(attr => {
+                        const opt = document.createElement("option");
+                        opt.value = attr;
+                        opt.innerText = attr;
+                        attrSelect.appendChild(opt);
+                    });
                 }
             }
-        });
-    </script>
-    {% endif %}
-
-    <script>
-        const allAttributes = {{ attributes | tojson }};
-        function updateAttributes() {
-            const classSelect = document.getElementById("class");
-            const attrSelect = document.getElementById("attribute");
-            const selected = classSelect.value;
-            attrSelect.innerHTML = "";
-
-            if (allAttributes[selected]) {
-                allAttributes[selected].forEach(attr => {
-                    const opt = document.createElement("option");
-                    opt.value = attr;
-                    opt.innerText = attr;
-                    attrSelect.appendChild(opt);
-                });
-            }
-        }
-    </script>
-</div>
-</body>
-</html>
+        </script>
+    </div>
+{% endblock %}

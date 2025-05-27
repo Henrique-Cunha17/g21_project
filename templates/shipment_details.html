@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'base.html' %}
+
+{% block title %}
     <title>Shipment Details Management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <header class="header">
             <img src="{{ url_for('static', filename='images/shipment_details.jpg') }}" alt="Shipment Details" class="logo">
@@ -44,15 +43,14 @@
         </form>
 
         <section class="nav-buttons">
-            <button id="first" {{ butshow }} onclick="window.location.href='/carriers?option=first'" class="btn">First</button>
-            <button id="previous" {{ butshow }} onclick="window.location.href='/carriers?option=previous'" class="btnimage" >
-            <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
+            <button id="first" {{ butshow }} onclick="window.location.href='/shipment_details?option=first'" class="btn">First</button>
+            <button id="previous" {{ butshow }} onclick="window.location.href='/shipment_details?option=previous'" class="btnimage">
+                <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
             </button>
-            <button id="next" {{ butshow }} onclick="window.location.href='/carriers?option=next'" class="btnimage">
-            <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
+            <button id="next" {{ butshow }} onclick="window.location.href='/shipment_details?option=next'" class="btnimage">
+                <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
             </button>
-            <button id="last" {{ butshow }} onclick="window.location.href='/carriers?option=last'" class="btn">Last</button>
+            <button id="last" {{ butshow }} onclick="window.location.href='/shipment_details?option=last'" class="btn">Last</button>
         </section>
     </div>
-</body>
-</html>
+{% endblock %}

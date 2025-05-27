@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'base.html' %}
+
+{% block title %}
     <title>Carriers Management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <header class="header">
             <img src="{{ url_for('static', filename='images/carriers.jpg') }}" alt="Carriers" class="logo">
@@ -29,22 +28,22 @@
         <form id="form" class="form" action="/carriers?option=save" method="post">
             <div class="form-group">
                 <label for="carrier_id">Carrier ID:</label>
-                <input type="text" {{ butedit }} id="carrier_id" name="carrier_id" value="{{ fields.carrier_id }}">
+                <input class="input-modern" type="text" {{ butedit }} id="carrier_id" name="carrier_id" value="{{ fields.carrier_id }}">
             </div>
 
             <div class="form-group">
                 <label for="vehicle_type">Vehicle Type:</label>
-                <input type="text" {{ butedit }} id="vehicle_type" name="vehicle_type" value="{{ fields.vehicle_type }}">
+                <input class="input-modern" type="text" {{ butedit }} id="vehicle_type" name="vehicle_type" value="{{ fields.vehicle_type }}">
             </div>
 
             <div class="form-group">
                 <label for="capacity">Capacity:</label>
-                <input type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
+                <input class="input-modern" type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
             </div>
 
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" {{ butedit }} id="name" name="name" value="{{ fields.name }}">
+                <input class="input-modern" type="text" {{ butedit }} id="name" name="name" value="{{ fields.name }}">
             </div>
         </form>
 
@@ -59,5 +58,4 @@
             <button id="last" {{ butshow }} onclick="window.location.href='/carriers?option=last'" class="btn">Last</button>
         </section>
     </div>
-</body>
-</html>
+{% endblock %}
