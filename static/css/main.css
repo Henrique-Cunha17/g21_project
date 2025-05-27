@@ -42,8 +42,10 @@ body, html {
     list-style: none;
     margin: 0;
     padding: 0;
+    height: 100%;
     width: 100%;
     background: transparent;
+    position: relative; /* importante para o pseudo-elemento do botão */
 }
 
 
@@ -77,6 +79,63 @@ h1 {
     border-color: #7da6d9;             /* azul claro ao focar */
     box-shadow: 0 0 0 2px rgba(125,166,217,0.15);
     background: #fff;
+}
+
+.navbar-btn {
+    display: flex;
+    position: relative;
+    background: none;
+    border: none;
+    color: #f1f4fa;
+    font-family: "Mulish", sans-serif;
+    height: 100%;
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0px 18px;
+    margin: 0 6px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    outline: none;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    z-index: 1;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-btn:hover,
+.navbar-btn:focus {
+    background: rgba(44,62,80,0.85); /* fundo mais escuro ao hover */
+    color: #fff;
+    box-shadow: 0 4px 24px 4px rgba(44,62,80,0.25);
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1000;
+    border-bottom: 2px solid #2c3e50;
+    background: linear-gradient(180deg, #3a4a5a 0%, #2c3e50 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.15);
+    transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+    backdrop-filter: blur(2px);
+}
+
+.navbar li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
 
 /* Buttons */
@@ -242,50 +301,6 @@ img {
 .btnimage:hover {
     transform: scale(1.1);
     transition: transform 0.6s;
-}
-
-.btnfull {
-    display: inline-block;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin: 10px 5px;
-    border: none;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    text-align: center;
-    cursor: pointer;
-    font-weight: 500;
-    white-space: normal;      /* Permite várias linhas */
-    overflow: visible;        /* Não corta o conteúdo */
-    text-overflow: unset;     /* Não usa "..." */
-    width: auto;              /* Adapta ao conteúdo */
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.btnfull:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    z-index: 1000;
-    border-bottom: 1px solid #222;
-    background: #222;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
 /* Statistics Chart & Table */
