@@ -232,12 +232,18 @@ h1 {
     background-color: #218838;
 }
 
+.label {
+    font-family: "mulish", sans-serif;
+    margin: 100px 0px;
+}
 /* Forms */
 .form {
+    margin: 4% auto;
     display: flex;
     flex-direction: column; 
     align-items: center;
     gap: 15px;
+    font-family: "mulish", sans-serif;
 }
 
 .form-group {

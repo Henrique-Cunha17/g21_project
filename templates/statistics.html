@@ -15,7 +15,7 @@
         <form method="POST" class="form">
             <div class="form-group">
                 <label for="class">Select Class:</label>
-                <select name="class" id="class" required onchange="updateAttributes()">
+                <select class="input-modern" name="class" id="class" required onchange="updateAttributes()">
                     <option value="">-- Choose a class --</option>
                     {% for cls in class_names %}
                         <option value="{{ cls }}" {% if cls == selected_class %}selected{% endif %}>{{ cls }}</option>
@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="attribute">Select Attribute:</label>
-                <select name="attribute" id="attribute" required>
+                <select class="input-modern" name="attribute" id="attribute" required>
                     {% if selected_class %}
                         {% for attr in attributes[selected_class] %}
                             <option value="{{ attr }}" {% if attr == selected_attr %}selected{% endif %}>{{ attr }}</option>

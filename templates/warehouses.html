@@ -28,17 +28,17 @@
         <form id="form" class="form" action="/warehouses?option=save" method="post">
             <div class="form-group">
                 <label for="warehouse_id">Warehouse ID:</label>
-                <input type="text" {{ butedit }} id="warehouse_id" name="warehouse_id" value="{{ fields.warehouse_id }}">
+                <input class="input-modern" type="text" {{ butedit }} id="warehouse_id" name="warehouse_id" value="{{ fields.warehouse_id }}">
             </div>
 
             <div class="form-group">
                 <label for="location">Location:</label>
-                <input type="text" {{ butedit }} id="location" name="location" value="{{ fields.location }}">
+                <input class="input-modern" type="text" {{ butedit }} id="location" name="location" value="{{ fields.location }}">
             </div>
 
             <div class="form-group">
                 <label for="capacity">Capacity:</label>
-                <input type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
+                <input class="input-modern" type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
             </div>
         </form>
 
