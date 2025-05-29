@@ -1,4 +1,8 @@
 from classes.gclass import Gclass
+from sqlalchemy import create_engine, text
+
+database_path = r'data\App.db'
+engine = create_engine(f'sqlite:///{database_path}')
 
 class Shipments(Gclass):
     obj = dict()
@@ -71,5 +75,11 @@ class Shipments(Gclass):
     def __str__(self):
         return f"id: {self._shipment_id}\nstatus: {self._status}\norigin: {self._origin}\ndestination: {self._destination}\nshipment_date: {self._shipment_date}\ntracking_number: {self._tracking_number}"
     
-database_path = r'data\Shipments.db'
-Shipments.read(database_path)
+    @classmethod
+    def update_status_in_db(cls, shipment_id, new_status):
+        with engine.connect() as conn:
+            conn.execute(
+                text("UPDATE Shipments SET status = :status WHERE shipment_id = :shipment_id"),
+                {"status": new_status, "shipment_id": shipment_id}
+            )
+            conn.commit()

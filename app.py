@@ -98,11 +98,43 @@ def get_common_data(cls, option: str) -> Tuple[str, str, Dict[str, str]]:
 
     return butshow, butedit, fields
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     if not session.get("user"):
         return redirect(url_for("login"))
-    return render_template("index.html", ulogin=session.get("user"))
+
+    filter_date = None
+
+    # Atualiza status se necessário
+    if request.method == "POST":
+        change_status_id = request.form.get("change_status_id")
+        new_status = request.form.get("new_status")
+        if change_status_id and new_status:
+            shipment = Shipments.obj.get(change_status_id)
+            if shipment:
+                shipment.status = new_status
+                Shipments.update_status_in_db(change_status_id, new_status)
+                Shipments.read(db_path)
+        filter_date = request.form.get("filter_date")
+
+    # Filtra as listas conforme o filtro de data
+    def filter_shipments(status):
+        return [
+            obj for obj in Shipments.obj.values()
+            if getattr(obj, "status", None) == status and
+               (not filter_date or str(getattr(obj, "shipment_date", "")) == filter_date)
+        ]
+
+    delivered_shipments = filter_shipments("Delivered")
+    in_transit_shipments = filter_shipments("In Transit")
+
+    return render_template(
+        "index.html",
+        ulogin=session.get("user"),
+        delivered_shipments=delivered_shipments,
+        in_transit_shipments=in_transit_shipments,
+        filter_date=filter_date
+    )
 
 @app.route("/login")
 def login():

@@ -10,16 +10,123 @@
 {% endblock %}
 
 {% block content %}
-    <section class="conteudo">
+    <section class="pagetitle">
         <h1>Transportadora Rapid Row</h1>
-        <div class="container">
-            <section class="button-group">
-                <a href="/carriers" class="btn">Carriers</a>
-                <a href="/shipments" class="btn">Shipments</a>
-                <a href="/shipment_details" class="btn">Shipment Details</a>
-                <a href="/warehouses" class="btn">Warehouses</a>
-                <a href="/statistics" class="btn">Statistics</a>
-            </section>
-        </div>
+    </section>
+
+    <section class="conteudo">
+        
+        
+
+        <section style="width: 100%; height: auto; padding: 20px; display: flex; flex-direction: row;"> 
+
+            
+
+            <div class="meia-pagina">
+
+            <form method="post" class="form" style="margin: 1% 0; flex-direction: row; width: 90%; display: flex; justify-content: center;">
+                <label for="filter_date">Filtrar por data de entrega:</label>
+                <input type="date" id="filter_date" name="filter_date" class="input-modern" style="max-width: 180px;" value="{{ filter_date|default('') }}">
+                <button type="submit" class="btn" style="width: auto; min-width: 80px; padding-left: 20px;">Filtrar</button>
+            </form>
+            
+                <h2>Encomendas em Trânsito</h2>
+                {% if in_transit_shipments %}
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for shipment in in_transit_shipments %}
+                    <tr>
+                        <td>{{ shipment.shipment_id }}</td>
+                        <td>{{ shipment.origin }}</td>
+                        <td>{{ shipment.destination }}</td>
+                        <td>
+                            <form method="post" style="margin:0; display:inline;">
+                                <input type="hidden" name="change_status_id" value="{{ shipment.shipment_id }}">
+                                <input type="hidden" name="new_status" value="Delivered">
+                                <input type="hidden" name="filter_date" value="{{ filter_date|default('') }}">
+                                <button type="submit" class="btn" style="padding: 6px 14px; font-size: 0.95rem;">Mover para Delivered</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" style="text-align: center;">There aren't any shipments on the selected date.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+
+            <div class="meia-pagina">
+                <h2>Encomendas Entregues</h2>
+                {% if delivered_shipments %}
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for shipment in delivered_shipments %}
+                    <tr>
+                        <td>{{ shipment.shipment_id }}</td>
+                        <td>{{ shipment.origin }}</td>
+                        <td>{{ shipment.destination }}</td>
+                        <td>
+                            <form method="post" style="margin:0; display:inline;">
+                                <input type="hidden" name="change_status_id" value="{{ shipment.shipment_id }}">
+                                <input type="hidden" name="new_status" value="In Transit">
+                                <input type="hidden" name="filter_date" value="{{ filter_date|default('') }}">
+                                <button type="submit" class="btn" style="padding: 6px 14px; font-size: 0.95rem;">Mover para In Transit</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" style="text-align: center;">There aren't any shipments on the selected date.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+                    
+
+        </section>
+             
     </section>
 {% endblock %}

@@ -1,4 +1,10 @@
 from classes.gclass import Gclass
+import os
+from sqlalchemy import create_engine, text
+
+# Caminho absoluto para a base de dados
+database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'App.db'))
+engine = create_engine(f'sqlite:///{database_path}')
 
 class Warehouses(Gclass):
     obj = dict()
@@ -43,9 +49,7 @@ class Warehouses(Gclass):
     
     def __str__(self):
         return f"id: {self._warehouse_id}\nlocation: {self._location}\ncapacity: {self._capacity}"
-    
-database_path = r'data\Warehouses.db'
-Warehouses.read(database_path)
+
     
     
     
