@@ -1,7 +1,9 @@
 from classes.gclass import Gclass
+import os
 from sqlalchemy import create_engine, text
 
-database_path = r'data\App.db'
+# Caminho absoluto para a base de dados
+database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'App.db'))
 engine = create_engine(f'sqlite:///{database_path}')
 
 class Shipments(Gclass):
@@ -65,7 +67,7 @@ class Shipments(Gclass):
         self._destination = dst
 
     @shipment_date.setter
-    def shipment_id(self, dat):
+    def shipment_date(self, dat):
         self._shipment_date = dat
 
     @tracking_number.setter

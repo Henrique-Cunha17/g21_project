@@ -9,6 +9,7 @@ from typing import Tuple, Dict
 from collections import Counter
 from datafile import filename
 from sqlalchemy import create_engine, text
+import datetime as dt
 import os
 
 app = Flask(__name__)
@@ -127,19 +128,30 @@ def index():
     if not session.get("user"):
         return redirect(url_for("login"))
 
-    filter_date = None
+    # Define valor inicial (hoje) para filter_date
+    filter_date = dt.datetime.strptime("2025-02-18", "%Y-%m-%d").date().isoformat()
 
-    # Atualiza status se necessário
     if request.method == "POST":
+        print("DEBUG POST DATA:", dict(request.form))
         change_status_id = request.form.get("change_status_id")
         new_status = request.form.get("new_status")
-        if change_status_id and new_status:
-            shipment = Shipments.obj.get(change_status_id)
-            if shipment:
-                shipment.status = new_status
-                Shipments.update_status_in_db(change_status_id, new_status)
-                Shipments.read(db_path)
-        filter_date = request.form.get("filter_date")
+        shipment = Shipments.obj.get(change_status_id)
+        if not shipment:
+            try:
+                shipment = Shipments.obj.get(int(change_status_id))
+            except Exception:
+                shipment = None
+        if change_status_id and new_status and shipment:
+            shipment.status = new_status
+            Shipments.update_status_in_db(change_status_id, new_status)
+            Shipments.read(db_path)
+            print("DEBUG: Shipments after update:")
+            for s in Shipments.obj.values():
+                print(s.shipment_id, s.status)
+
+        # Atualiza filter_date se vier do formulário
+        if "filter_date" in request.form:
+            filter_date = request.form.get("filter_date")
 
     # Filtra as listas conforme o filtro de data
     def filter_shipments(status):
@@ -152,12 +164,38 @@ def index():
     delivered_shipments = filter_shipments("Delivered")
     in_transit_shipments = filter_shipments("In Transit")
 
+    # --- Top 3 carriers do mês selecionado ---
+    # Extrai ano e mês do filter_date
+    selected_month = filter_date[:7]  # 'YYYY-MM'
+    # Junta todos os shipments do mês selecionado
+    shipments_in_month = [
+        obj for obj in Shipments.obj.values()
+        if str(getattr(obj, "shipment_date", "")).startswith(selected_month)
+    ]
+    # Conta as encomendas por carrier_id (usando Shipment_details)
+    carrier_count = {}
+    for shipment in shipments_in_month:
+        # Procura o carrier_id correspondente na Shipment_details
+        for detail in Shipment_details.obj.values():
+            if str(detail.shipment_id) == str(shipment.shipment_id):
+                carrier_id = detail.carrier_id
+                carrier_count[carrier_id] = carrier_count.get(carrier_id, 0) + 1
+    # Ordena e apanha o top 3
+    top_carriers = sorted(carrier_count.items(), key=lambda x: x[1], reverse=True)[:3]
+    # Junta o nome do carrier
+    top_carriers_info = []
+    for carrier_id, count in top_carriers:
+        carrier = Carriers.obj.get(carrier_id)
+        carrier_name = carrier.name if carrier else str(carrier_id)
+        top_carriers_info.append({"carrier_id": carrier_id, "name": carrier_name, "count": count})
+
     return render_template(
         "index.html",
         ulogin=session.get("user"),
-        delivered_shipments=delivered_shipments,
-        in_transit_shipments=in_transit_shipments,
-        filter_date=filter_date
+        delivered_shipments = sorted(filter_shipments("Delivered"),key=lambda x: int(x.shipment_id)),
+        in_transit_shipments = sorted(filter_shipments("In Transit"),key=lambda x: int(x.shipment_id)),
+        filter_date=filter_date,
+        top_carriers_info=top_carriers_info  # <-- passa para o template
     )
 
 @app.route("/login")
