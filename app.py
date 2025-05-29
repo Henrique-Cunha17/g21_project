@@ -8,6 +8,7 @@ from subs.apps_userlogin import apps_userlogin
 from typing import Tuple, Dict
 from collections import Counter
 from datafile import filename
+from sqlalchemy import create_engine, text
 import os
 
 app = Flask(__name__)
@@ -15,8 +16,31 @@ app.secret_key = os.urandom(24).hex()
 
 # Load database
 db_path = os.path.abspath(os.path.join(filename, 'App.db'))
-for cls in [Carriers, Shipments, Shipment_details, Warehouses]:
+for cls in [Carriers, Shipments, Shipment_details, Warehouses, Userlogin]:
     cls.read(db_path)
+
+engine = create_engine(f'sqlite:///{db_path}')
+
+def ensure_default_users_sqlalchemy():
+    users = [
+        (1, "admin", "admin", Userlogin.set_password("1234")),
+        (2, "user1", "users", Userlogin.set_password("12345"))
+    ]
+    with engine.connect() as conn:
+        for id, user, usergroup, password in users:
+            result = conn.execute(
+                text("SELECT COUNT(*) FROM Userlogin WHERE id = :id"),
+                {"id": id}
+            )
+            if result.scalar() == 0:
+                conn.execute(
+                    text("INSERT INTO Userlogin (id, user, usergroup, password) VALUES (:id, :user, :usergroup, :password)"),
+                    {"id": id, "user": user, "usergroup": usergroup, "password": password}
+                )
+        conn.commit()
+
+ensure_default_users_sqlalchemy()
+Userlogin.read(db_path) # Ensure Userlogin is loaded
 
 def get_common_data(cls, option: str) -> Tuple[str, str, Dict[str, str]]:
     butshow, butedit = "", "disabled"
