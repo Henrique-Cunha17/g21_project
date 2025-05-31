@@ -10,6 +10,8 @@ from collections import Counter
 from datafile import filename
 from sqlalchemy import create_engine, text
 import datetime as dt
+import pandas as pd
+import plotly.express as px
 import os
 
 app = Flask(__name__)
@@ -52,6 +54,7 @@ def get_common_data(cls, option: str) -> Tuple[str, str, Dict[str, str]]:
         cls.pos = getattr(cls, 'pos', -1)
 
         if option == 'exit':
+            session['filter_date'] = request.form.get('filter_date', '') or request.args.get('filter_date', '')
             return redirect(url_for('index'))
 
         prev_option = session.get('prev_option', '')
@@ -128,11 +131,66 @@ def index():
     if not session.get("user"):
         return redirect(url_for("login"))
 
-    # Define valor inicial (hoje) para filter_date
-    filter_date = dt.datetime.strptime("2025-02-18", "%Y-%m-%d").date().isoformat()
-
+    # Lê o filtro da data do formulário ou mantém o valor anterior/default
     if request.method == "POST":
-        print("DEBUG POST DATA:", dict(request.form))
+        filter_date = request.form.get("filter_date")
+    else:
+        filter_date = request.args.get("filter_date") or dt.datetime.strptime("2025-02-18", "%Y-%m-%d").date().isoformat()
+
+    # DataFrame de envios
+    df_shipments = pd.DataFrame([
+        {
+            "shipment_id": s.shipment_id,
+            "status": s.status,
+            "origin": s.origin,
+            "destination": s.destination,
+            "shipment_date": s.shipment_date,
+            "tracking_number": s.tracking_number
+        }
+        for s in Shipments.obj.values()
+    ])
+
+    # Filtra pelo dia exato
+    if filter_date:
+        df_shipments = df_shipments[df_shipments["shipment_date"].astype(str) == filter_date]
+
+    status_counts = df_shipments.groupby("status").size().reset_index(name="count")
+
+    # Gráfico circular (pie chart)
+    fig = px.pie(
+        status_counts,
+        names="status",
+        values="count",
+        color_discrete_sequence=["#7da6d9", "#8e9194", "#f1f4fa"],
+    )
+
+    fig.update_traces(
+        textinfo='percent+label',
+        marker=dict(line=dict(color='#2c3e50', width=2))
+    )
+    fig.update_layout(
+        plot_bgcolor="#2c3e50",
+        paper_bgcolor="#2c3e50",
+        font=dict(
+            family="Mulish, sans-serif",
+            color="#f1f4fa",
+            size=16
+        ),
+        title_font=dict(
+            family="Cal Sans, sans-serif",
+            color="#f1f4fa",
+            size=22
+        ),
+        legend=dict(
+            font=dict(color="#f1f4fa"),
+            bgcolor="#2c3e50"
+        )
+    )
+
+    plot_html = fig.to_html(full_html=False)
+
+    # Atualiza status se pedido
+    if request.method == "POST":
         change_status_id = request.form.get("change_status_id")
         new_status = request.form.get("new_status")
         shipment = Shipments.obj.get(change_status_id)
@@ -145,15 +203,8 @@ def index():
             shipment.status = new_status
             Shipments.update_status_in_db(change_status_id, new_status)
             Shipments.read(db_path)
-            print("DEBUG: Shipments after update:")
-            for s in Shipments.obj.values():
-                print(s.shipment_id, s.status)
 
-        # Atualiza filter_date se vier do formulário
-        if "filter_date" in request.form:
-            filter_date = request.form.get("filter_date")
-
-    # Filtra as listas conforme o filtro de data
+    # Filtra as listas conforme o filtro de data e status
     def filter_shipments(status):
         return [
             obj for obj in Shipments.obj.values()
@@ -164,25 +215,22 @@ def index():
     delivered_shipments = filter_shipments("Delivered")
     in_transit_shipments = filter_shipments("In Transit")
 
-    # --- Top 3 carriers do mês selecionado ---
-    # Extrai ano e mês do filter_date
-    selected_month = filter_date[:7]  # 'YYYY-MM'
-    # Junta todos os shipments do mês selecionado
-    shipments_in_month = [
+    # --- Top 3 carriers do dia selecionado ---
+    # Junta todos os shipments do dia selecionado
+    shipments_in_day = [
         obj for obj in Shipments.obj.values()
-        if str(getattr(obj, "shipment_date", "")).startswith(selected_month)
+        if str(getattr(obj, "shipment_date", "")) == filter_date
     ]
     # Conta as encomendas por carrier_id (usando Shipment_details)
     carrier_count = {}
-    for shipment in shipments_in_month:
-        # Procura o carrier_id correspondente na Shipment_details
+    for shipment in shipments_in_day:
         for detail in Shipment_details.obj.values():
             if str(detail.shipment_id) == str(shipment.shipment_id):
                 carrier_id = detail.carrier_id
                 carrier_count[carrier_id] = carrier_count.get(carrier_id, 0) + 1
     # Ordena e apanha o top 3
     top_carriers = sorted(carrier_count.items(), key=lambda x: x[1], reverse=True)[:3]
-    # Junta o nome do carrier
+    
     top_carriers_info = []
     for carrier_id, count in top_carriers:
         carrier = Carriers.obj.get(carrier_id)
@@ -192,10 +240,11 @@ def index():
     return render_template(
         "index.html",
         ulogin=session.get("user"),
-        delivered_shipments = sorted(filter_shipments("Delivered"),key=lambda x: int(x.shipment_id)),
-        in_transit_shipments = sorted(filter_shipments("In Transit"),key=lambda x: int(x.shipment_id)),
+        delivered_shipments=sorted(delivered_shipments, key=lambda x: int(x.shipment_id)),
+        in_transit_shipments=sorted(in_transit_shipments, key=lambda x: int(x.shipment_id)),
         filter_date=filter_date,
-        top_carriers_info=top_carriers_info  # <-- passa para o template
+        plot_html=plot_html,
+        top_carriers_info=top_carriers_info
     )
 
 @app.route("/login")
@@ -323,6 +372,19 @@ def statistics():
         counts=data_counts,
         ulogin=session.get("user")
     )
+
+@app.route("/map")
+def map():
+    warehouses = []
+    for w in Warehouses.obj.values():
+        warehouses.append({
+            "id": w.warehouse_id,
+            "location": w.location,
+            "lat": w.latitude,
+            "lon": w.longitude,
+            "capacity": w.capacity
+        })
+    return render_template("map.html", warehouses=warehouses)
 
 if __name__ == '__main__':
     app.run(debug=True)
