@@ -6,54 +6,104 @@
 
 
 {% block content %}
-<section class="conteudo">
-    <div class="dados">
-        <br><br><br>
-        <h1>Userlogin</h1>
-        <br>
-        <button id="edit" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=edit'" class="btn">Edit</button>
-        {% if group == "admin" %} 
-            <button id="delete" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=delete'" class="btn">Delete</button>
-            <button id="insert" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=insert'" class="btn">Insert</button>
-        {% endif %}
-        <button id="save" type="submit" form="form" {{butedit}} class="btn">Save</button>
-        <button id="cancel" type="button" {{butedit}} onclick="window.location.href = '/Userlogin?option=cancel'" class="btn">Cancel</button>
-        <button id="exit" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=exit'" class="btn">Exit</button>
-        <br><br>
-        <form id="form" action="/Userlogin?option=save" method="post">
-         {% if group == "admin" %} 
-            <label for="id">Id:</label>
-            <input type="text" disabled id="id" name="id" value="{{id}}" size="4"/>
-            <br><br>
-            <label for="user">User:</label>
-            <input type="text" {{butedit}} id="user" name="user" value="{{user}}" size="40"/>
-            <br><br>
-            <label for="usergroup">Group:</label>
-            <input type="text" {{butedit}} id="usergroup" name="usergroup" value="{{usergroup}}" size="40"/>
-        {% else %}
-            <label for="id">Id:</label>
-            <input type="text" disabled id="id" name="id" value="{{id}}" size="4"/>
-            <br><br>
-            <label for="user">User:</label>
-            <input type="text" disabled id="user" name="user" value="{{user}}" size="40"/>
-            <br><br>
-            <label for="usergroup">Group:</label>
-            <input type="text" disabled id="usergroup" name="usergroup" value="{{usergroup}}" size="40"/>
-        {% endif %}        
-            <br><br>
-            <label for="password">Password:</label>
-            <input type="password" {{butedit}} id="password" name="password" size="40"/>
-        </form>
-        <br>
-        {% if group == "admin" %} 
-            <button id="first" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=first'" class="btn">First</button>
-            <button id="previous" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=previous'" class="btn">Previous</button>
-            <button id="next" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=next'" class="btn">Next</button>
-            <button id="last" type="button" {{butshow}} onclick="window.location.href = '/Userlogin?option=last'" class="btn">Last</button>
-        {% endif %}
-        <br>
-        <p style="color: red;">{{msg}}</p>
-        
-    </div>
+<section class="container">
+        <header class="header">
+            <h1>User Login</h1>
+        </header>
+
+        <section style="display: flex; flex-direction: row; align-items: center;">
+            
+            <section class="meia-pagina" style="height: 100%; align-items: flex-end;">
+                <form id="form" class="form" action="/Userlogin?option=save" method="post" style="margin-right: 3.5%;">
+                {% if group == "admin" %}
+                    <div class="form-group">
+                        <label for="id">Id:</label>
+                        <input class="input-modern" type="text" disabled id="id" name="id" value="{{id}}" size="4"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="user">User:</label>
+                        <input class="input-modern" type="text" {{butedit}} id="user" name="user" value="{{user}}" size="40"/> 
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="usergroup">Group:</label>
+                        <input class="input-modern" type="text" {{butedit}} id="usergroup" name="usergroup" value="{{usergroup}}" size="40"/>
+
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <label for="id">Id:</label>
+                        <input class="input-modern" type="text" disabled id="id" name="id" value="{{id}}" size="4"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="user">User:</label>
+                        <input class="input-modern" type="text" disabled id="user" name="user" value="{{user}}" size="40"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="usergroup">Group:</label>
+                        <input class="input-modern" type="text" disabled id="usergroup" name="usergroup" value="{{usergroup}}" size="40"/>
+                    </div>
+                    
+                {% endif %}        
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input class="input-modern" type="password" {{butedit}} id="password" name="password" size="40"/>
+                    </div>
+                </form>
+
+                {% if group == "admin" %}
+                <div class="nav-buttons" style="margin-bottom: 0px; justify-content: flex-end;">
+                    <button id="first" {{ butshow }} onclick="window.location.href='/Userlogin?option=first'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/first.png') }}" alt="First">
+                    </button>
+                    <button id="previous" {{ butshow }} onclick="window.location.href='/Userlogin?option=previous'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
+                    </button>
+                    <button id="next" {{ butshow }} onclick="window.location.href='/Userlogin?option=next'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
+                    </button>
+                    <button id="last" {{ butshow }} onclick="window.location.href='/Userlogin?option=last'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/last.png') }}" alt="Last">
+                    </button>
+                </div>
+                {% endif %}
+            </section>
+            
+            <section class="meia-pagina" style="margin-bottom: 5%; align-items: flex-start;">
+                <div style="padding-left: 10%;">
+                <div class="button-group" style="display: flex; flex-direction: column; margin-top: 0px;">
+                
+                    <div class="full_retangulo" style="flex-direction: row; padding: 5% 5%;">
+                        {% if group == "admin" %}
+                        <button id="insert" {{ butshow }} onclick="window.location.href='/Userlogin?option=insert'" class="btn">New User</button>
+                        {% endif %}
+                        <button id="exit" {{ butshow }} onclick="window.location.href='/Userlogin?option=exit'" class="btn">Exit</button>
+                    </div>
+                
+                    <div class="full_retangulo" style="flex-direction: row; padding: 5% 5%; gap: 16px;">
+                       <button id="edit" {{ butshow }} onclick="window.location.href='/Userlogin?option=edit'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/editar.png') }}" alt="Edit">
+                        </button>
+                {% if group == "admin" %}
+                        <button id="delete" {{ butshow }} onclick="window.location.href='/Userlogin?option=delete'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/eliminar.png') }}" alt="Delete">
+                        </button>
+                {% endif %}
+                        <button id="save" type="submit" form="form" {{ butedit }} class="btnimage">
+                            <img src="{{ url_for('static', filename='images/save.png') }}" alt="Save">
+                        </button>
+                        <button id="cancel" {{ butedit }} onclick="window.location.href='/Userlogin?option=cancel'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/noun-cancel-2419034.png') }}" alt="Cancel">
+                        </button> 
+                    </div>
+                </div>
+                </div>
+            </section>
+            
+            
+        </section>
 </section>
 {% endblock %}

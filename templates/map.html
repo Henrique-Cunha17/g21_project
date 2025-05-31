@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Carriers Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{%block scripts %}
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Map script loaded");
+    var map = L.map('map').setView([41.15, -8.61], 6); // Posição inicial (Portugal)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var warehouses = {{ warehouses|tojson }};
+    warehouses.forEach(function(w) {
+        L.marker([w.lat, w.lon])
+            .addTo(map)
+            .bindPopup("Location: " + w.location + "<br>Warehouse ID: " + w.id + "<br>Capacity: " + w.capacity);
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    <section class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='images/map.jpg') }}" alt="Carriers" class="logo">
+            <h1>Warehouses Map</h1>
+        </header>
+        <div id="map" style="height:500px;width:100%;"></div>
+    </section>
+{% endblock %}

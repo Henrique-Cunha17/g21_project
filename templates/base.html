@@ -3,31 +3,42 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flask demo PCII</title>
+    <title>Rapid Row Carry</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     {% block title %}
     {% endblock %}
   </head>
+
+ 
     <body>
         <nav class="navbar">
             <ul class="menu">
                 {% if ulogin == None %}
                     <li><a class="navbar-btn" href="/login">Login</a></li>
                 {% else %}
-                    <li><a class="navbar-btn" href="/logoff">Logoff</a></li>
+                    <li><a class="navbar-btn" href="/">
+                      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" style="width: 60px; height: 60px;">
+                    </a></li>
                     <li><a class="navbar-btn" href="/carriers">Carriers</a></li>
                     <li><a class="navbar-btn" href="/shipments">Shipments</a></li>
                     <li><a class="navbar-btn" href="/shipment_details">Shipment Details</a></li>
                     <li><a class="navbar-btn" href="/warehouses">Warehouses</a></li>
+                    <li><a class="navbar-btn" href="/map">Map</a></li>
                     <li><a class="navbar-btn" href="/statistics">Statistics</a></li>
                     <li><a class="navbar-btn" href="/Userlogin">Users</a></li>
-                    <li><a class="navbar-btn" style="color:rgb(167, 188, 195)">USER: {{ulogin}}</a></li>
+                    <li><a class="navbar-btn" style="color:rgb(167, 188, 195)">{{ulogin}}</a></li>
+                    <li><a class="navbar-btn" href="/logoff">
+                      <img src="{{ url_for('static', filename='images/leave.png') }}" alt="Logout" style="width: 20px; height: 20px;">
+                    </a></li>
                 {% endif %}
             </ul>
         </nav>
     {% block content %}
     {% endblock %}
+    {% block scripts %}{%endblock %}
   </body>
 </html>

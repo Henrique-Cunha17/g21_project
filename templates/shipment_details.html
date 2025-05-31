@@ -5,52 +5,77 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 {% endblock %}
 
-{% block content %}
-    <div class="container">
+{% block content %}´
+    <section class="container">
         <header class="header">
             <img src="{{ url_for('static', filename='images/shipment_details.jpg') }}" alt="Shipment Details" class="logo">
             <h1>Shipment Details Management</h1>
         </header>
 
-        <section class="button-group">
-            <button id="edit" {{ butshow }} onclick="window.location.href='/shipment_details?option=edit'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/editar.png') }}" alt="Edit">
-            </button>
-            <button id="delete" {{ butshow }} onclick="window.location.href='/shipment_details?option=delete'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/eliminar.png') }}" alt="Delete">
-            </button>
-            <button id="insert" {{ butshow }} onclick="window.location.href='/shipment_details?option=insert'" class="btn">Insert</button>
-            <button id="save" type="submit" form="form" {{ butedit }} class="btn">Save</button>
-            <button id="cancel" {{ butedit }} onclick="window.location.href='/shipment_details?option=cancel'" class="btn">Cancel</button>
-            <button id="exit" {{ butshow }} onclick="window.location.href='/shipment_details?option=exit'" class="btn">Exit</button>
+        <section style="display: flex; flex-direction: row; align-items: center;">
+            
+            <section class="meia-pagina" style="height: 100%; align-items: flex-end;">
+                <form id="form" class="form" action="/shipment_details?option=save" method="post" style="margin-right: 3.5%;">
+                    <div class="form-group">
+                        <label for="id">Detail ID:</label>
+                        <input class="input-modern" type="text" {{ butedit }} id="id" name="id" value="{{ fields.id }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipment_id">Shipment ID:</label>
+                        <input class="input-modern" type="text" {{ butedit }} id="shipment_id" name="shipment_id" value="{{ fields.shipment_id }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="carrier_id">Carrier ID:</label>
+                        <input class="input-modern" type="text" {{ butedit }} id="carrier_id" name="carrier_id" value="{{ fields.carrier_id }}">
+                    </div>
+                </form>
+
+                <div class="nav-buttons" style="margin-bottom: 0px; justify-content: flex-end;">
+                    <button id="first" {{ butshow }} onclick="window.location.href='/shipment_details?option=first'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/first.png') }}" alt="First">
+                    </button>
+                    <button id="previous" {{ butshow }} onclick="window.location.href='/shipment_details?option=previous'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
+                    </button>
+                    <button id="next" {{ butshow }} onclick="window.location.href='/shipment_details?option=next'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
+                    </button>
+                    <button id="last" {{ butshow }} onclick="window.location.href='/shipment_details?option=last'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/last.png') }}" alt="Last">
+                    </button>
+                </div>
+            </section>
+            
+            <section class="meia-pagina" style="margin-bottom: 5%; align-items: flex-start;">
+                <div style="padding-left: 10%;">
+                <div class="button-group" style="display: flex; flex-direction: column; margin-top: 0px;">
+                    <div class="full_retangulo" style="flex-direction: row; padding: 5% 5%;">
+                        <button id="insert" {{ butshow }} onclick="window.location.href='/shipment_details?option=insert'" class="btn">New Details</button>
+                        <button id="exit" {{ butshow }} onclick="window.location.href='/shipment_details?option=exit'" class="btn">Exit</button>
+                    </div>
+                    <div class="full_retangulo" style="flex-direction: row; padding: 5% 5%; gap: 16px;">
+                       <button id="edit" {{ butshow }} onclick="window.location.href='/shipment_details?option=edit'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/editar.png') }}" alt="Edit">
+                        </button>
+                        <button id="delete" {{ butshow }} onclick="window.location.href='/shipment_details?option=delete'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/eliminar.png') }}" alt="Delete">
+                        </button>
+                        <button id="save" type="submit" form="form" {{ butedit }} class="btnimage">
+                            <img src="{{ url_for('static', filename='images/save.png') }}" alt="Save">
+                        </button>
+                        <button id="cancel" {{ butedit }} onclick="window.location.href='/shipment_details?option=cancel'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/noun-cancel-2419034.png') }}" alt="Cancel">
+                        </button> 
+                    </div>
+                </div>
+                </div>
+            </section>
+            
+            
         </section>
-
-        <form id="form" class="form" action="/shipment_details?option=save" method="post">
-            <div class="form-group">
-                <label for="id">Detail ID:</label>
-                <input class="input-modern" type="text" {{ butedit }} id="id" name="id" value="{{ fields.id }}">
-            </div>
-
-            <div class="form-group">
-                <label for="shipment_id">Shipment ID:</label>
-                <input class="input-modern" type="text" {{ butedit }} id="shipment_id" name="shipment_id" value="{{ fields.shipment_id }}">
-            </div>
-
-            <div class="form-group">
-                <label for="carrier_id">Carrier ID:</label>
-                <input class="input-modern" type="text" {{ butedit }} id="carrier_id" name="carrier_id" value="{{ fields.carrier_id }}">
-            </div>
-        </form>
-
-        <section class="nav-buttons">
-            <button id="first" {{ butshow }} onclick="window.location.href='/shipment_details?option=first'" class="btn">First</button>
-            <button id="previous" {{ butshow }} onclick="window.location.href='/shipment_details?option=previous'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
-            </button>
-            <button id="next" {{ butshow }} onclick="window.location.href='/shipment_details?option=next'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
-            </button>
-            <button id="last" {{ butshow }} onclick="window.location.href='/shipment_details?option=last'" class="btn">Last</button>
-        </section>
-    </div>
+        
+        
+    </section>
 {% endblock %}

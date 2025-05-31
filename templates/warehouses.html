@@ -12,45 +12,78 @@
             <h1>Warehouses Management</h1>
         </header>
 
-        <section class="button-group">
-            <button id="edit" {{ butshow }} onclick="window.location.href='/warehouses?option=edit'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/editar.png') }}" alt="Edit">
-            </button>
-            <button id="delete" {{ butshow }} onclick="window.location.href='/warehouses?option=delete'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/eliminar.png') }}" alt="Delete">
-            </button>
-            <button id="insert" {{ butshow }} onclick="window.location.href='/warehouses?option=insert'" class="btn">Insert</button>
-            <button id="save" type="submit" form="form" {{ butedit }} class="btn">Save</button>
-            <button id="cancel" {{ butedit }} onclick="window.location.href='/warehouses?option=cancel'" class="btn">Cancel</button>
-            <button id="exit" {{ butshow }} onclick="window.location.href='/warehouses?option=exit'" class="btn">Exit</button>
-        </section>
+        <section style="display: flex; flex-direction: row; align-items: center;">
+            
+            <section class="meia-pagina" style="height: 100%; align-items: flex-end;">
+                <form id="form" class="form" action="/warehouses?option=save" method="post" style="margin-right: 3.5%;">
+                    <div class="form-group">
+                        <label for="warehouse_id">Warehouse ID:</label>
+                        <input class="input-modern" type="text" {{ butedit }} id="warehouse_id" name="warehouse_id" value="{{ fields.warehouse_id }}">
+                    </div>
 
-        <form id="form" class="form" action="/warehouses?option=save" method="post">
-            <div class="form-group">
-                <label for="warehouse_id">Warehouse ID:</label>
-                <input class="input-modern" type="text" {{ butedit }} id="warehouse_id" name="warehouse_id" value="{{ fields.warehouse_id }}">
-            </div>
+                    <div class="form-group">
+                        <label for="location">Location:</label>
+                        <input class="input-modern" type="text" {{ butedit }} id="location" name="location" value="{{ fields.location }}">
+                    </div>
 
-            <div class="form-group">
-                <label for="location">Location:</label>
-                <input class="input-modern" type="text" {{ butedit }} id="location" name="location" value="{{ fields.location }}">
-            </div>
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input class="input-modern" type="number" step="any" {{ butedit }} id="latitude" name="latitude" value="{{ fields.latitude }}">
+                    </div>
 
-            <div class="form-group">
-                <label for="capacity">Capacity:</label>
-                <input class="input-modern" type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
-            </div>
-        </form>
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input class="input-modern" type="number" step="any" {{ butedit }} id="longitude" name="longitude" value="{{ fields.longitude }}">
+                    </div>
 
-        <section class="nav-buttons">
-            <button id="first" {{ butshow }} onclick="window.location.href='/warehouses?option=first'" class="btn">First</button>
-            <button id="previous" {{ butshow }} onclick="window.location.href='/warehouses?option=previous'" class="btnimage" >
-                <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
-            </button>
-            <button id="next" {{ butshow }} onclick="window.location.href='/warehouses?option=next'" class="btnimage">
-                <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
-            </button>
-            <button id="last" {{ butshow }} onclick="window.location.href='/warehouses?option=last'" class="btn">Last</button>
+                    <div class="form-group">
+                        <label for="capacity">Capacity:</label>
+                        <input class="input-modern" type="number" {{ butedit }} id="capacity" name="capacity" value="{{ fields.capacity }}">
+                    </div>
+                </form>
+
+                <div class="nav-buttons" style="margin-bottom: 0px; justify-content: flex-end;">
+                    <button id="first" {{ butshow }} onclick="window.location.href='/warehouses?option=first'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/first.png') }}" alt="First">
+                    </button>
+                    <button id="previous" {{ butshow }} onclick="window.location.href='/warehouses?option=previous'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/arrow-left.png') }}" alt="Previous">
+                    </button>
+                    <button id="next" {{ butshow }} onclick="window.location.href='/warehouses?option=next'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/arrow-right.png') }}" alt="Next">
+                    </button>
+                    <button id="last" {{ butshow }} onclick="window.location.href='/warehouses?option=last'" class="btnimage">
+                        <img src="{{ url_for('static', filename='images/last.png') }}" alt="Last">
+                    </button>
+                </div>
+            </section>
+            
+            <section class="meia-pagina" style="margin-bottom: 5%; align-items: flex-start;">
+                <div style="padding-left: 10%;">
+                <div class="button-group" style="display: flex; flex-direction: column; margin-top: 0px;">
+                    <div class="full_retangulo" style="flex-direction: row; padding: 5% 5%;">
+                        <button id="insert" {{ butshow }} onclick="window.location.href='/warehouses?option=insert'" class="btn">New Warehouse</button>
+                        <button id="exit" {{ butshow }} onclick="window.location.href='/warehouses?option=exit'" class="btn">Exit</button>
+                    </div>
+                    <div class="full_retangulo" style="flex-direction: row; padding: 5% 5%; gap: 16px;">
+                       <button id="edit" {{ butshow }} onclick="window.location.href='/warehouses?option=edit'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/editar.png') }}" alt="Edit">
+                        </button>
+                        <button id="delete" {{ butshow }} onclick="window.location.href='/warehouses?option=delete'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/eliminar.png') }}" alt="Delete">
+                        </button>
+                        <button id="save" type="submit" form="form" {{ butedit }} class="btnimage">
+                            <img src="{{ url_for('static', filename='images/save.png') }}" alt="Save">
+                        </button>
+                        <button id="cancel" {{ butedit }} onclick="window.location.href='/warehouses?option=cancel'" class="btnimage">
+                            <img src="{{ url_for('static', filename='images/noun-cancel-2419034.png') }}" alt="Cancel">
+                        </button> 
+                    </div>
+                </div>
+                </div>
+            </section>
+            
+            
         </section>
     </div>
 {% endblock %}
