@@ -5,23 +5,34 @@
 {% endblock %}
 
 {% block content %}
-    <section class="conteudo">
-        <div class = "dados">
-            <br><br>
-            <h1>Login</h1>
-            <br>
-            <form id="form" action="/chklogin" method="POST">
-                <label class="label" for="user">User:</label>
-                <input class="input-modern" type="text" id="user" name="user"  value = "{{user}}" size="30"/>
+    <section class="conteudo" style="display: flex; flex-direction: row; min-height: 100vh; padding-bottom: 0px;">
+
+        <section class="meia-pagina" style="background-image: url('/static/images/login.jpg');
+                background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;">
+        </section>
+
+        <section class="meia-pagina">
+            <div class = "dados">
                 <br><br>
-                <label class="label" for="password">Password:</label>
-                <input class="input-modern" type="password" id="password" name="password" value = "{{password}}" size="30"/>
+                <h1>Login</h1>
+                <br>
+                <form id="form" action="/chklogin" method="POST">
+                    <label class="label" for="user">User:</label>
+                    <input class="input-modern" type="text" id="user" name="user"  value = "{{user}}" size="30"/>
+                    <br><br>
+                    <label class="label" for="password">Password:</label>
+                    <input class="input-modern" type="password" id="password" name="password" value = "{{password}}" size="30"/>
+                    <br><br>
+                    <button type="submit" class="btn">Login</button>
+                </form>
                 <br><br>
-                <button type="submit" class="btn">Login</button>
-            </form>
-            <br><br>
-            
-            <h3 style="color: red;">{{resul}}</h3>
-        </div>
+                
+                <h3 style="color: red;">{{resul}}</h3>
+            </div>
+        </section>
+        
     </section>
 {% endblock %}
